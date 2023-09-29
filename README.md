@@ -9,7 +9,7 @@ This repository is a modification from https://github.com/wshilaji/panoptic_coco
    git clone https://github.com/cocodataset/panopticapi
 * labelme
   ```ruby
-   git clone https://github.com/cocodataset/panopticapi
+   git clone https://github.com/wkentaro/labelme
 ```
 ### Steps
 1. Label your data images with labelme.

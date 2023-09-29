@@ -9,7 +9,8 @@ This repository is a modification from https://github.com/wshilaji/panoptic_coco
    git clone https://github.com/cocodataset/panopticapi
 ```
 * labelme
-   ```ruby
+
+```ruby
    git clone https://github.com/cocodataset/panopticapi
 ```
 ### Steps

@@ -2,7 +2,7 @@
 Tools that can be used to label and annotate COCO Panoptic Segmentation annotation format
 
 This repository is a modification from https://github.com/wshilaji/panoptic_coco_scipt
-
+<details>
 ### Requirements
 * panopticapi
   ```ruby
@@ -11,7 +11,7 @@ This repository is a modification from https://github.com/wshilaji/panoptic_coco
   ```ruby
    git clone https://github.com/wkentaro/labelme
 ```
-
+</details>
 ### Steps
 1. Label your data images with labelme.
    ```ruby

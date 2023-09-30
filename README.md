@@ -23,6 +23,7 @@ This repository is a modification from https://github.com/wshilaji/panoptic_coco
    out_json_dir: path to the COCO annotation .json format output folder
    out_dir: png output format of each image annotations
    out_dir1: png output format of each image annotations
+```
 6. Run labelme2panoptic.py
    ```ruby
    python labelme2panoptic.py

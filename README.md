@@ -4,7 +4,7 @@ Tools that can be used to label and annotate COCO Panoptic Segmentation annotati
 This repository is a modification from https://github.com/wshilaji/panoptic_coco_scipt
 
 <h3>Requirements</h3>
-* panopticapi
+"*" panopticapi
   ```ruby
    git clone https://github.com/cocodataset/panopticapi
 * labelme

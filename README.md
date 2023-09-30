@@ -1,4 +1,4 @@
-# COCO-Panoptic-Annotation-Tools
+# COCO-panoptic-annotation-tools
 Tools that can be used to label and annotate COCO Panoptic Segmentation annotation format
 
 This repository is a modification from https://github.com/wshilaji/panoptic_coco_scipt

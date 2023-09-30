@@ -3,6 +3,9 @@ Tools that can be used to label and annotate COCO Panoptic Segmentation annotati
 
 This repository is a modification from https://github.com/wshilaji/panoptic_coco_scipt
 
+Original: each color of the png annotations output represents each class, no different colors for each class instance
+Modification: different colors for each instance
+
 ### Requirements
 * panopticapi
   ```ruby

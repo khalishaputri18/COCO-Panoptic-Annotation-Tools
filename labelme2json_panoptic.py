@@ -26,15 +26,14 @@ from labelme.logger import logger
 from labelme import utils
 from numpy import asarray, ndim
 
-root_dir = 'train/'   #path to the images folder
-out_json_dir = 'output' #path to the COCO json annotation format output folder
-json_file = 'train' #path to the images annotations folder
+root_dir = 'train/'
+out_json_dir = 'output'
+json_file = 'train'
+# segmentations_folder = './sample_data/panoptic_examples/'
 panoptic_coco_categories = 'panoptic_coco_categories.json'
-out_dir = 'annotations1' #path to png annotation output 
-out_dir1 = 'annotations2' #path to png annotation output
+out_dir = 'annotations1'
+out_dir1 = 'annotations2'
 lbl_png = PIL.Image.open("palette.png")
-numpy_data = asarray(lbl_png)
-data2d = numpy_data.reshape(-1, numpy_data.shape[-1])
 palette = lbl_png.getpalette()
 colorIndexMap = np.array(palette).reshape(256, 3)
 
@@ -58,18 +57,19 @@ def json_to_png(data, stuff_cat):
         else:
             label_value = len(label_name_to_value)
             label_name_to_value[label_name] = label_value
+
     lbl, ins = utils.shapes_to_label(
         img.shape, data["shapes"], label_name_to_value
     )
-    
     file_png = osp.join(out_dir,"{}.png".format(data["imagePath"].split('.')[0]))
-    
     for shape in sorted(data["shapes"], key=lambda x: x["label"]):
         label_name = shape["label"]
+        print(label_name)
         if label_name in stuff_cat:
             utils.lblsave(file_png, lbl) #for stuff
         else:
-            utils.lblsave(file_png, ins) #for stuff
+            utils.lblsave(file_png, ins) #for things
+
     img = PIL.Image.open(file_png).convert('RGB')
     '''
     plt.figure(figsize=(9, 5))
@@ -120,10 +120,8 @@ def main():
         ),
         licenses=p_license,
         images=[
-            # license, url, file_name, height, width, date_captured, id
         ],
         annotations=[
-            # segmentation, area, iscrowd, image_id, bbox, category_id, id
         ],
         categories = modified_categories,
     )
@@ -154,15 +152,12 @@ def main():
             )
         )
         label_name_to_value = json_to_png(data, stuff_cat)
-        # annotations
         segment_infos = []
-        # print(data['shapes'][1]['label'].split('-')[0])
         for i in range(len(data['shapes'])):
             segmentation = [list(np.asarray(data['shapes'][i]['points']).flatten())]  # data['shapes'][0]['points']
 
             x = segmentation[0][::2]
             y = segmentation[0][1::2]
-            # print(x,y)
             x_left = min(x)
             y_left = min(y)
             w = max(x) - min(x)
@@ -171,7 +166,6 @@ def main():
 
             cat_list_dict = [cat for cat in data_coco['categories'] if
                              cat['name'] == data['shapes'][i]['label']]
-
             cls_id = cat_list_dict[0]['id']
             
             instance_id = label_name_to_value[data['shapes'][i]['label']]
@@ -187,7 +181,6 @@ def main():
                 )
             
             )
-
         data_coco['annotations'].append(
             dict(
                 image_id=data_coco['images'][image_id]['id'],
@@ -206,19 +199,16 @@ def main():
 if __name__ == "__main__":
     if osp.exists(out_json_dir):
         print("Output directory already exists:", out_json_dir)
-        # sys.exit(1)
     else:
         os.makedirs(out_json_dir)
 
     if osp.exists(out_dir):
         print("Output directory already exists:", out_dir)
-        # sys.exit(1)
     else:
         os.makedirs(out_dir)
 
     if osp.exists(out_dir1):
         print("Output directory already exists:", out_dir1)
-        # sys.exit(1)
     else:
         os.makedirs(out_dir1)
     main()

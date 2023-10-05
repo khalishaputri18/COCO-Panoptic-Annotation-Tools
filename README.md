@@ -29,10 +29,9 @@ Modification: different colors for each instance and each class with stuff categ
           |___001.jpg
           |___001.json #labelme json annotation file
 4. Clone this repository within the same path where the data images folder are located. (within data/ folder if according to example above)
-5. Run seperate_json.py to seperate the stuff and things categories from each image into two json files (stuff categories json and things categories json)
+5. Run seperate_json.py to seperate the stuff and things categories from each image into two json files (stuff categories json and things categories json). The stuff categories json will be saved within semantic/train folder, and the thing categories json within instance/train folder.
    ```ruby
    python seperate_json.py
-The stuff categories json will be saved within semantic/train folder, and the thing categories json within instance/train folder.
 6. Run labelme2png_instance.py and labelme2png_semantic.py to generate both stuff and things mask as two seperate image, where the stuff mask png images result are saved within annotations_sem1 and annotations_sem2 folders, and the things mask png images result within annotations_ins1 and annotations_ins2 folders.
    ```ruby
    python labelme2png_instance.py

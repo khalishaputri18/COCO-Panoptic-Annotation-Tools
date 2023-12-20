@@ -26,12 +26,13 @@ from labelme.logger import logger
 from labelme import utils
 from numpy import asarray, ndim
 
-root_dir = 'semantic/train/'
-json_file = 'semantic/train/'
-panoptic_coco_categories = 'panoptic_coco_categories.json'
-out_dir = 'annotations_sem1'
-out_dir1 = 'annotations_sem2'
-lbl_png = PIL.Image.open("palette.png")
+#directories
+root_dir = 'semantic/train2/'   #semantic labelme json input path
+json_file = 'train2/'           #original labelme json input path
+panoptic_coco_categories = 'panoptic_coco_categories.json'  #panoptic coco categories
+out_dir = 'annotations_sem1_train2'     #png semantic annotations output path 1
+out_dir1 = 'annotations_sem2_train2'    #png semantic annotations output path 1
+lbl_png = PIL.Image.open("palette.png") #color palette for label color
 palette = lbl_png.getpalette()
 colorIndexMap = np.array(palette).reshape(256, 3)
 
@@ -42,15 +43,15 @@ def json_to_png(data):
     imageData = data.get("imageData")
 
     if not imageData:
-        imagePath = os.path.join(os.path.dirname(json_file), data["imagePath"])
+        imagePath = os.path.join(os.path.dirname(json_file), data["key"])
         print(imagePath)
         with open(imagePath, "rb") as f:
             imageData = f.read()
             imageData = base64.b64encode(imageData).decode("utf-8")
     img = utils.img_b64_to_arr(imageData)
     label_name_to_value = {"_background_": 0}
-    print(type(data['shapes']))
-    for shape in sorted(data["shapes"], key=lambda x: x["label"]):
+    print(type(data['boxes']))
+    for shape in sorted(data["boxes"], key=lambda x: x["label"]):
         print(type(shape))
         label_name = shape["label"]
         if label_name in label_name_to_value:
@@ -62,28 +63,15 @@ def json_to_png(data):
     print("LBLNAMETOVLUE:",label_name_to_value)
 
     lbl, ins = utils.shapes_to_label(
-        img.shape, data["shapes"], label_name_to_value
+        img.shape, data["boxes"], label_name_to_value
     )
 
-    file_png = osp.join(out_dir,"{}.png".format(data["imagePath"].split('.')[0]))
+    file_png = osp.join(out_dir,"{}.png".format(data["key"].split('.')[0]))
     utils.lblsave(file_png, lbl) #for stuff
 
 
     img = PIL.Image.open(file_png).convert('RGB')
-    
-    '''
-    plt.figure(figsize=(9, 5))
-    plt.subplot(121)
-    plt.imshow(lbl_png)
-    plt.axis('off')
-    plt.subplot(122)
-    plt.imshow(img)
-    plt.axis('off')
-    plt.tight_layout()
-    plt.show()
-    '''
-    img.save(osp.join(out_dir1,"{}.png".format(data["imagePath"].split('.')[0])))
-    
+    img.save(osp.join(out_dir1,"{}.png".format(data["key"].split('.')[0])))
     return  label_name_to_value
 
 
@@ -129,20 +117,18 @@ def main():
         categories = modified_categories,
     )
     
-    json_list = os.listdir(root_dir)
-    cnt = counter()
     label_files = glob.glob(osp.join(root_dir, "*.json"))
     for image_id, filename in enumerate(label_files):
         logger.info("open file : {}".format(filename))
         with open(filename, 'r') as fp:
             data = json.load(fp)
-        file_name = os.path.basename(data['imagePath'])
+        file_name = os.path.basename(data['key'])
         data_coco['images'].append(
             dict(
                 id=image_id,
                 file_name=file_name,
-                height=data['imageHeight'],
-                width=data['imageWidth'],
+                height=data['height'],
+                width=data['width'],
                 license=None,
                 flickr_url=None,
                 coco_url=None,
@@ -153,8 +139,8 @@ def main():
         # annotations
         segment_infos = []
 
-        for i in range(len(data['shapes'])):
-            segmentation = [list(np.asarray(data['shapes'][i]['points']).flatten())]  # data['shapes'][0]['points']
+        for i in range(len(data['boxes'])):
+            segmentation = [list(np.asarray(data['boxes'][i]['points']).flatten())]  # data['shapes'][0]['points']
 
             x = segmentation[0][::2]
             y = segmentation[0][1::2]
@@ -165,10 +151,10 @@ def main():
             bbox = [int(x_left), int(y_left), int(w), int(h)]
 
             cat_list_dict = [cat for cat in data_coco['categories'] if
-                             cat['name'] == data['shapes'][i]['label']]
+                             cat['name'] == data['boxes'][i]['label']]
             cls_id = cat_list_dict[0]['id']
             
-            instance_id = label_name_to_value[data['shapes'][i]['label']]
+            instance_id = label_name_to_value[data['boxes'][i]['label']]
             color = colorIndexMap[instance_id]
             maskid = color[0] + 256 * color[1] + 256 * 256 * color[2]
             segment_infos.append(
@@ -179,7 +165,6 @@ def main():
                     bbox=bbox,
                     iscrowd=0
                 )
-            
             )
         data_coco['annotations'].append(
             dict(

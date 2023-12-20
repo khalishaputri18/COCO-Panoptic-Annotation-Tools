@@ -33,13 +33,23 @@ Modification: different colors for each instance for things categories and each 
    ```ruby
    python labelme2png_instance.py
    python labelme2png_semantic.py
+   ```
+   Result examples:
+   ![182169146](https://github.com/khalishaputri18/COCO-Panoptic-Annotation-Tools/assets/66949610/0e78fa13-0fcf-48b6-9f6e-2cba301bda08)
+   ![182169146](https://github.com/khalishaputri18/COCO-Panoptic-Annotation-Tools/assets/66949610/0aac8d97-10d4-490a-992a-56a213c78c6e)
+
+
 7. Run merge_label.py to merge both stuff and things masks of each image. Change the directory path in the program according to your need.
    ```ruby
    python merge_label.py
-8. Run labelme2json_panoptic.py to generate the COCO panoptic JSON format file that will be saved within the output folder.
+   ```
+   Result examples:
+   ![182169146](https://github.com/khalishaputri18/COCO-Panoptic-Annotation-Tools/assets/66949610/ff5279a4-0f54-423c-b5c7-d5d2ff27f973)
+
+9. Run labelme2json_panoptic.py to generate the COCO panoptic JSON format file that will be saved within the output folder.
    ```ruby
    python labelme2json_panoptic.py
-9. As the result, you will get:
+10. As the result, you will get:
     * Panoptic segmentation mask png files as the data png annotations.
     * Panoptic segmentation JSON COCO annotation format file for every annotation of every image within one folder (e.g. train, val).
 

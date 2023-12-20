@@ -34,7 +34,13 @@ Modification: different colors for each instance for things categories and each 
    python labelme2png_instance.py
    python labelme2png_semantic.py
    ```
-   Result examples:
+   **Examples**
+
+   Original Images:
+
+   ![182169146](https://github.com/khalishaputri18/COCO-Panoptic-Annotation-Tools/assets/66949610/1f0705ad-552d-4fe6-b556-969c42b6f1ef)
+
+   Results:
    
    ![182169146](https://github.com/khalishaputri18/COCO-Panoptic-Annotation-Tools/assets/66949610/0e78fa13-0fcf-48b6-9f6e-2cba301bda08)
    ![182169146](https://github.com/khalishaputri18/COCO-Panoptic-Annotation-Tools/assets/66949610/0aac8d97-10d4-490a-992a-56a213c78c6e)
@@ -44,7 +50,9 @@ Modification: different colors for each instance for things categories and each 
    ```ruby
    python merge_label.py
    ```
-   Result examples:
+   **Example**
+   
+   Result:
    
    ![182169146](https://github.com/khalishaputri18/COCO-Panoptic-Annotation-Tools/assets/66949610/ff5279a4-0f54-423c-b5c7-d5d2ff27f973)
 

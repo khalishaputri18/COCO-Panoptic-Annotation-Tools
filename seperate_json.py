@@ -1,15 +1,16 @@
-from labelme2json_panoptic import modify_categories
+from labelme2json_panoptic_train import modify_categories
 from labelme.logger import logger
 import json
 import glob
 import os
 import os.path as osp
 
-root_dir = 'train/'
-out_sem = 'semantic/'
-out_ins = 'instance/'
-sem_train = 'semantic/train'
-ins_train = 'instance/train'
+#directories
+root_dir = 'train2/'            #labelme json input
+out_sem = 'semantic/'           #directory for labelme json semantic result
+out_ins = 'instance/'           #directory for labelme json instance result
+sem_train = 'semantic/train2'   #specific directory for labelme json semantic result
+ins_train = 'instance/train2'   #specific directory for labelme json instance result
 
 def main():
     modified_categories, info, p_license = modify_categories()
@@ -29,7 +30,7 @@ def main():
         sem_anns = []
         ins_anns = []
 
-        for shape in data['shapes']:
+        for shape in data['boxes']:
             label_name = shape['label']
             print(label_name)
             if label_name in stuff_cat:
@@ -39,31 +40,20 @@ def main():
             else:
                 ins_anns.append(shape)
                 print('ins an 0:', ins_anns)
-                
-                
-            semantic_ann ={
-                    'version': data['version'],
-                    'flags': data['flags'],
-                    'shapes': sem_anns,
-                    'lineColor': data['lineColor'],
-                    'fillColor': data['fillColor'],
-                    'imagePath': data['imagePath'],
-                    'imageData': data['imageData'],
-                    'imageHeight': data['imageHeight'],
-                    'imageWidth': data['imageWidth']
+                  
+            semantic_ann ={                     #Roboflow labelme format: 
+                    'boxes': sem_anns,          #polygon details
+                    'key': data['key'],         #source image path
+                    'height': data['height'],   #image height
+                    'width': data['width']      #image width
                     }
             print('sem an 1;',semantic_ann)
 
             instance_ann ={
-                    'version': data['version'],
-                        'flags': data['flags'],
-                    'shapes': ins_anns,
-                    'lineColor': data['lineColor'],
-                    'fillColor': data['fillColor'],
-                    'imagePath': data['imagePath'],
-                    'imageData': data['imageData'],
-                    'imageHeight': data['imageHeight'],
-                    'imageWidth': data['imageWidth']
+                    'boxes': ins_anns,
+                    'key': data['key'],
+                    'height': data['height'],
+                    'width': data['width']
                     }
             print('ins ann 1:', instance_ann)
 

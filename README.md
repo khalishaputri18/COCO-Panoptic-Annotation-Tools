@@ -3,9 +3,9 @@ Tools that can be used to label and annotate COCO Panoptic Segmentation annotati
 
 This repository is a modification from https://github.com/wshilaji/panoptic_coco_scipt
 
-Original: each color of the png annotations output represents each class, no different colors for each class instance (semantic)
+Original: each color of the png annotations output represents each class with no different colors for each class instance (semantic), and the polygon area is 0.
 
-Modification: different colors for each instance and each class with stuff category (panoptic)
+Modification: different colors for each instance for things categories and each class for stuff categories, and the polygon area is calculated using the shoelace algorithm.
 
 ### Requirements
 * panopticapi
